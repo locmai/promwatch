@@ -1,0 +1,11 @@
+prometheus:
+  instances:
+    - name: "prometheus-1"
+      url: "https://prometheus.demo.do.prometheus.io"
+    # - name: "prometheus-2"
+    #   url: "http://prometheus2.example.com:9090"
+
+export:
+  destination:
+    name: "central-prometheus"
+    url: "http://central-prometheus.example.com:9090"
