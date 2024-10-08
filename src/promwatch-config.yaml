@@ -2,6 +2,7 @@ prometheus:
   instances:
     - name: "prometheus-1"
       url: "https://prometheus.demo.do.prometheus.io"
-    # - name: "prometheus-2"
-    #   url: "http://prometheus2.example.com:9090"
+    - name: "prometheus-2"
+      url: "https://prometheus.demo.do.prometheus.io"
+      limit: 15
 
