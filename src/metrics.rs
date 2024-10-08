@@ -47,10 +47,10 @@ pub fn initialize_registry(mut registry: Registry, config: Config) -> Result<App
     return Ok(AppState{ metrics, registry, config})
 }
 
-async fn fetch_metrics(url: &str) -> Result<TsdbStatus, Error> {
+async fn fetch_metrics(url: &str, limit: i32) -> Result<TsdbStatus, Error> {
     let client = Client::new();
 
-    let endpoint = format!("{}/api/v1/status/tsdb", url);
+    let endpoint = format!("{}/api/v1/status/tsdb?limit={}", url, limit);
     
     let response = client.get(&endpoint).send().await?;
     
@@ -63,7 +63,7 @@ pub async fn metrics_handler(State(state): State<Arc<Mutex<AppState>>>) -> impl 
     let state = state.lock().await;
 
     for instance in &state.config.prometheus.instances {
-        match fetch_metrics(&instance.url).await {
+        match fetch_metrics(&instance.url, instance.limit).await {
             Ok(metrics) => {
                 state.metrics.status.get_or_create(&DefaultLabels{instance: instance.name.clone(), name: "status".to_string()}).set(0);
                 if metrics.status == "success" {
