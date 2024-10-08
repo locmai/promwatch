@@ -3,7 +3,6 @@ use serde::Deserialize;
 #[derive(Debug, Deserialize)]
 pub struct Config {
     pub prometheus: PrometheusInstances,
-    pub export: ExportDestination,
 }
 
 #[derive(Debug, Deserialize)]
@@ -17,7 +16,3 @@ pub struct PrometheusInstance {
     pub url: String,
 }
 
-#[derive(Debug, Deserialize)]
-pub struct ExportDestination {
-    pub destination: PrometheusInstance,
-}

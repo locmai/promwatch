@@ -8,7 +8,7 @@ use axum::Router;
 use prometheus_client::registry::Registry;
 use std::sync::Arc;
 use tokio::sync::Mutex;
-use metrics::{initialize_registry, metrics_handler};
+use metrics::{initialize_registry, metrics_handler, Metrics};
 
 mod tsdb;
 mod metrics;
@@ -29,8 +29,9 @@ fn load_config(filename: &str) -> Config {
         .expect("Failed to parse the configuration file")
 }
 
-#[derive(Debug)]
+#[derive()]
 pub struct AppState {
+    pub metrics: Metrics,
     pub registry: Registry,
     pub config: Config,
 }
@@ -41,13 +42,7 @@ async fn main() {
     let config = load_config(&args.config);
     println!("Loaded configuration: {:?}", config);
 
-    let mut state = AppState {
-        registry: Registry::default(),
-        config,
-    };
-    state = initialize_registry(state).unwrap(); 
-
-    let state = Arc::new(Mutex::new(state));
+    let state = Arc::new(Mutex::new(initialize_registry(Registry::default(),config).unwrap()));
     let router = Router::new()
         .route("/metrics", get(metrics_handler))
         .with_state(state);

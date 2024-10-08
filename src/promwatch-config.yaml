@@ -5,7 +5,3 @@ prometheus:
     # - name: "prometheus-2"
     #   url: "http://prometheus2.example.com:9090"
 
-export:
-  destination:
-    name: "central-prometheus"
-    url: "http://central-prometheus.example.com:9090"
