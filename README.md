@@ -1,4 +1,4 @@
-## promwatch
+## PromWatch
 
 Watch over Prometheus TSDB API
 
